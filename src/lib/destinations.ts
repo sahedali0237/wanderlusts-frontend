@@ -128,8 +128,6 @@ export function formatCategory(category: string) {
 export function formatDepartureDate(date: string) {
   if (!date) return "Flexible departure";
 
-  // Date-only values are parsed as local time so the rendered day does not
-  // shift with the server timezone.
   const parsed = new Date(
     /^\d{4}-\d{2}-\d{2}$/.test(date) ? `${date}T00:00:00` : date,
   );
