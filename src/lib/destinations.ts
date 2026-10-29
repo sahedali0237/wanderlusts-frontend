@@ -13,14 +13,6 @@ export type Destination = {
 const DESTINATIONS_PATH = "/api/destination";
 
 /**
- * Base URL of this Next.js app (same origin as the API routes).
- * Set NEXT_PUBLIC_APP_URL in your deployment env vars; falls back to localhost.
- */
-function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-}
-
-/**
  * Next.js aborts in-flight `fetch()` calls once a prerender pass completes.
  * During `next build` that rejection is expected — the real request re-runs the
  * fetch — so it must not be reported as an application error.
@@ -62,8 +54,7 @@ function normalizeDestination(destination: Destination): Destination {
 
 export async function getDestinations(): Promise<Destination[]> {
   try {
-    const baseUrl = getApiBaseUrl();
-    const res = await fetch(`${baseUrl}${DESTINATIONS_PATH}`, {
+    const res = await fetch(DESTINATIONS_PATH, {
       cache: "no-store",
     });
 
@@ -85,9 +76,8 @@ export async function getDestination(
   id: string,
 ): Promise<Destination | null> {
   try {
-    const baseUrl = getApiBaseUrl();
     const res = await fetch(
-      `${baseUrl}${DESTINATIONS_PATH}/${encodeURIComponent(id)}`,
+      `${DESTINATIONS_PATH}/${encodeURIComponent(id)}`,
       { cache: "no-store" },
     );
 

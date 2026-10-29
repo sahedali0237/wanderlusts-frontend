@@ -40,13 +40,9 @@ async function BookingsContent() {
   const user = session?.user;
   let bookings: Booking[] = [];
 
-  const host = requestHeaders.get("host") || "localhost:3000";
-  const proto = requestHeaders.get("x-forwarded-proto") || "https";
-  const baseUrl = `${proto}://${host}`;
-
   if (user?.email) {
     try {
-      const res = await fetch(`${baseUrl}/api/my-booking`, {
+      const res = await fetch("/api/my-booking", {
         cache: "no-store",
         headers: requestHeaders,
       });
