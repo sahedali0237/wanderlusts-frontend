@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { getApiBaseUrl } from "@/lib/destinations";
 import BookingsList from "@/components/bookings/bookings-list";
 import type { Booking } from "@/components/bookings/booking-card";
 
@@ -42,7 +43,7 @@ async function BookingsContent() {
 
   if (user?.email) {
     try {
-      const res = await fetch("/api/my-booking", {
+      const res = await fetch(`${getApiBaseUrl()}/api/my-booking`, {
         cache: "no-store",
         headers: requestHeaders,
       });

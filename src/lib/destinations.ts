@@ -13,6 +13,18 @@ export type Destination = {
 const DESTINATIONS_PATH = "/api/destination";
 
 /**
+ * Absolute base URL for self-fetching our own API routes from Server
+ * Components. On Vercel this must be set to the production origin
+ * (e.g. https://wanderlusts-frontend.vercel.app); locally it falls back to
+ * http://localhost:3000.
+ */
+function getApiBaseUrl(): string {
+  return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+}
+
+export { getApiBaseUrl };
+
+/**
  * Next.js aborts in-flight `fetch()` calls once a prerender pass completes.
  * During `next build` that rejection is expected — the real request re-runs the
  * fetch — so it must not be reported as an application error.
@@ -54,7 +66,8 @@ function normalizeDestination(destination: Destination): Destination {
 
 export async function getDestinations(): Promise<Destination[]> {
   try {
-    const res = await fetch(DESTINATIONS_PATH, {
+    const baseUrl = getApiBaseUrl();
+    const res = await fetch(`${baseUrl}${DESTINATIONS_PATH}`, {
       cache: "no-store",
     });
 
@@ -76,8 +89,9 @@ export async function getDestination(
   id: string,
 ): Promise<Destination | null> {
   try {
+    const baseUrl = getApiBaseUrl();
     const res = await fetch(
-      `${DESTINATIONS_PATH}/${encodeURIComponent(id)}`,
+      `${baseUrl}${DESTINATIONS_PATH}/${encodeURIComponent(id)}`,
       { cache: "no-store" },
     );
 
