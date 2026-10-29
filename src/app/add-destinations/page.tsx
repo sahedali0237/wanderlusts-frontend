@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { apiFetch, AuthTokenError } from "@/lib/api-client";
+import { apiFetch } from "@/lib/api-client";
 
 const categories = [
   { value: "beach", label: "Beach" },
@@ -59,11 +59,7 @@ export default function AddPackagePage() {
       }
     } catch (err) {
       console.error("Create destination error:", err);
-      setError(
-        err instanceof AuthTokenError
-          ? err.message
-          : "Could not connect to server. Make sure your backend is running on port 5000.",
-      );
+      setError("Could not connect to server.");
       return;
     }
 

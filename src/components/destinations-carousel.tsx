@@ -20,7 +20,7 @@ interface DestinationsCarouselProps {
 }
 
 export default function DestinationsCarousel({
-  apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/destination`,
+  apiUrl = "/api/destination",
   autoScrollInterval = 3000,
 }: DestinationsCarouselProps) {
   const [destinations, setDestinations] = useState<Destination[]>([]);

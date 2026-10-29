@@ -4,10 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "cn";
 import { authClient } from "@/lib/auth-client";
-import { AuthTokenError, getAuthHeaders } from "@/lib/api-client";
 import { formatPrice, type Destination } from "@/lib/destinations";
 
-const BOOKING_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/booking`;
+const BOOKING_API_URL = "/api/booking";
 
 interface BookNowButtonProps {
   destination: Destination;
@@ -70,7 +69,6 @@ export default function BookNowButton({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(await getAuthHeaders()),
         },
         body: JSON.stringify(payload),
       });
@@ -79,8 +77,8 @@ export default function BookNowButton({
 
       if (res.ok) {
         alert(`Booking confirmed for ${destination.destinationName}!`);
-        router.refresh();
         router.push("/profile");
+        router.refresh();
       } else if (res.status === 401) {
         setError("Your session has expired. Please sign in again.");
       } else {
@@ -92,11 +90,7 @@ export default function BookNowButton({
       }
     } catch (err) {
       console.error("Booking error:", err);
-      setError(
-        err instanceof AuthTokenError
-          ? err.message
-          : "Could not connect to the booking server. Make sure it is running on port 5000.",
-      );
+      setError("Could not connect to the booking server.");
     } finally {
       setIsBooking(false);
     }

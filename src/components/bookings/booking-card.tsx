@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, CheckCircle, MapPin, Trash2, Eye } from "lucide-react";
 import { cn } from "cn";
-import { apiFetch, AuthTokenError } from "@/lib/api-client";
+import { apiFetch } from "@/lib/api-client";
 import {
   formatDepartureDate,
   formatPrice,
@@ -117,11 +117,8 @@ export default function BookingCard({
         setDeleteError(data.message || "Failed to cancel booking.");
       }
     } catch (err) {
-      setDeleteError(
-        err instanceof AuthTokenError
-          ? err.message
-          : "Could not reach the booking server.",
-      );
+      console.error("Delete booking error:", err);
+      setDeleteError("Could not reach the booking server.");
     } finally {
       setIsDeleting(false);
     }

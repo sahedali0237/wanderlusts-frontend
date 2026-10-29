@@ -12,7 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { apiFetch, AuthTokenError } from "@/lib/api-client";
+import { apiFetch } from "@/lib/api-client";
 import type { Destination } from "@/lib/destinations";
 
 interface DeleteDestinationDialogProps {
@@ -66,11 +66,7 @@ const DeleteDestinationDialog = ({
       router.refresh();
     } catch (err) {
       console.error("Delete error:", err);
-      setError(
-        err instanceof AuthTokenError
-          ? err.message
-          : "Could not connect to server. Make sure your backend is running on port 5000.",
-      );
+      setError("Could not connect to server.");
       setIsDeleting(false);
     }
   }

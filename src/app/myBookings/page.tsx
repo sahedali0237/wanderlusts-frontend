@@ -4,8 +4,6 @@ import { headers } from "next/headers";
 import BookingsList from "@/components/bookings/bookings-list";
 import type { Booking } from "@/components/bookings/booking-card";
 
-const BOOKINGS_API = process.env.NEXT_PUBLIC_API_URL;
-
 const pulse = "animate-pulse rounded-lg bg-neutral-200";
 
 function BookingsSkeleton() {
@@ -42,23 +40,16 @@ async function BookingsContent() {
   const user = session?.user;
   let bookings: Booking[] = [];
 
-  const jwtToken = await auth.api.getToken({
-    headers: requestHeaders,
-  });
+  const host = requestHeaders.get("host") || "localhost:3000";
+  const proto = requestHeaders.get("x-forwarded-proto") || "https";
+  const baseUrl = `${proto}://${host}`;
 
   if (user?.email) {
     try {
-      const res = await fetch(
-        `${BOOKINGS_API}/my-booking/${encodeURIComponent(user.email)}`,
-        {
-          cache: "no-store",
-          headers: {
-            ...(jwtToken?.token
-              ? { authorization: `Bearer ${jwtToken.token}` }
-              : {}),
-          },
-        },
-      );
+      const res = await fetch(`${baseUrl}/api/my-booking`, {
+        cache: "no-store",
+        headers: requestHeaders,
+      });
 
       if (res.ok) {
         const json = await res.json();

@@ -14,6 +14,7 @@ import {
   Upload,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import type { Booking } from "@/components/bookings/booking-card";
 
 interface ProfileData {
   name: string;
@@ -110,6 +111,43 @@ export default function ProfilePage() {
     upcomingTrips: 0,
     totalSpent: "$0",
   };
+
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!email) return;
+
+    let cancelled = false;
+
+    async function loadBookings() {
+      setBookingsLoading(true);
+      try {
+        const res = await fetch("/api/my-booking", { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          let fetched: Booking[] = [];
+          if (Array.isArray(json)) {
+            fetched = json;
+          } else if (Array.isArray(json?.bookings)) {
+            fetched = json.bookings;
+          } else if (Array.isArray(json?.data)) {
+            fetched = json.data;
+          }
+          if (!cancelled) setBookings(fetched);
+        }
+      } catch (error) {
+        console.error("Failed to load bookings:", error);
+      } finally {
+        if (!cancelled) setBookingsLoading(false);
+      }
+    }
+
+    loadBookings();
+    return () => {
+      cancelled = true;
+    };
+  }, [email]);
 
   return (
     <div className="min-h-screen bg-neutral-50 py-10 px-4 sm:px-6 lg:px-8">
@@ -288,6 +326,54 @@ export default function ProfilePage() {
                 ))}
               </div>
             </div>
+
+            {/* My Bookings */}
+            {bookings.length > 0 ? (
+              <div className="mt-8">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-neutral-500 mb-6">
+                  My Recent Bookings
+                </h2>
+                <div className="space-y-4">
+                  {bookings.slice(0, 5).map((booking) => (
+                    <div
+                      key={booking._id || booking.id || booking.bookingId}
+                      className="flex items-center justify-between p-4 bg-white rounded-lg border border-neutral-200 shadow-sm"
+                    >
+                      <div className="flex-1">
+                        <p className="font-semibold text-neutral-900">
+                          {booking.destination?.destinationName ??
+                            booking.destinationName ??
+                            "Untitled Trip"}
+                        </p>
+                        <p className="text-sm text-neutral-500">
+                          {booking.departureDate
+                            ? "Departure: " + booking.departureDate
+                            : ""}
+                          {booking.destination?.price && (
+                            <span className="ml-2">• ${booking.destination.price}</span>
+                          )}
+                        </p>
+                      </div>
+                      <span className="text-sm font-medium text-[#10a5c4]">
+                        {booking.status ?? "Confirmed"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {bookings.length > 5 && (
+                  <Link
+                    href="/myBookings"
+                    className="mt-4 inline-flex items-center gap-1 text-sm text-[#10a5c4] hover:text-[#0e8ea9] underline underline-offset-4"
+                  >
+                    View all bookings
+                  </Link>
+                )}
+              </div>
+            ) : bookingsLoading ? (
+              <div className="mt-8 py-8 text-center text-neutral-400">
+                Loading bookings...
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
