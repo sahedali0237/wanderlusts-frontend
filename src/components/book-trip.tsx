@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function BookTrip() {
@@ -27,13 +28,13 @@ export default function BookTrip() {
           Join thousands of travelers who have discovered the world with us
         </p>
 
-        <button
-          type="button"
+        <Link
+          href="/destinations"
           className="mt-8 inline-flex h-12 items-center justify-center gap-3 bg-white px-6 text-xs font-semibold tracking-[0.1em] text-neutral-900 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#062b35]"
         >
           BOOK YOUR TRIP TODAY
           <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-        </button>
+        </Link>
       </div>
     </section>
   );

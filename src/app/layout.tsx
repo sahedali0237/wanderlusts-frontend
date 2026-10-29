@@ -11,6 +11,9 @@ const josefinSans = Josefin_Sans({
 export const metadata: Metadata = {
   title: "Wanderlust",
   description: "Full Stack Next.js App",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

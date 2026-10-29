@@ -211,16 +211,32 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 h-17.5 w-full bg-white shadow-sm">
       <nav
         aria-label="Main navigation"
-        className="relative mx-auto flex h-full w-full max-w-360 items-center justify-between px-4 sm:px-6 lg:px-10"
+        className="relative mx-auto grid h-full w-full max-w-360 grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 lg:px-10"
       >
-        {/* Left: desktop links or mobile hamburger */}
-        <div className="flex items-center gap-4">
-          {/* md and up: normal page links */}
+        {/* Left: logo */}
+        <div className="flex items-center gap-2 lg:gap-3 justify-start shrink-0">
+          <Link href="/" aria-label="Wanderlast home" className="shrink-0">
+            <Image
+              src="/assets/Wanderlast.png"
+              alt="Wanderlast"
+              width={162}
+              height={24}
+              priority
+              className="h-5 w-auto sm:h-6"
+            />
+          </Link>
+        </div>
+
+        {/* Center: desktop links */}
+        <div className="flex items-center gap-4 lg:gap-6 justify-center min-w-0 overflow-hidden whitespace-nowrap">
           <Suspense fallback={<DesktopNavLinksFallback />}>
             <DesktopNavLinks />
           </Suspense>
+        </div>
 
-          {/* sm and below: hamburger / X icon on the left */}
+        {/* Right: hamburger + sign in / sign up or user popover */}
+        <div className="flex items-center gap-3 lg:gap-7 justify-end min-w-0">
+          {/* sm and below: hamburger / X icon */}
           {!isPending && (
             <button
               type="button"
@@ -236,24 +252,7 @@ export default function Navbar() {
               )}
             </button>
           )}
-        </div>
 
-        {/* Center logo (exact center) */}
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
-          <Link href="/" aria-label="Wanderlast home" className="shrink-0">
-            <Image
-              src="/assets/Wanderlast.png"
-              alt="Wanderlast"
-              width={162}
-              height={24}
-              priority
-              className="h-5 w-auto sm:h-6"
-            />
-          </Link>
-        </div>
-
-        {/* Right: sign in / sign up or user popover */}
-        <div className="flex items-center gap-4 lg:gap-7">
           {isPending ? (
             <span
               aria-hidden="true"

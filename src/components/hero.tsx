@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const searchFields = [
@@ -37,8 +38,8 @@ export default function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
-          <button
-            type="button"
+          <Link
+            href="/destinations"
             className="group flex h-14 min-w-50 items-center justify-center gap-3 bg-[#10a5c4] px-6 text-sm font-semibold tracking-[0.08em] text-white transition-colors hover:bg-[#0e8ea9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
           >
             EXPLORE NOW
@@ -46,13 +47,13 @@ export default function Hero() {
               className="h-5 w-5 transition-transform group-hover:translate-x-1"
               strokeWidth={1.5}
             />
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            href="/destinations"
             className="flex h-14 min-w-50 items-center justify-center border border-white/40 bg-white/20 px-6 text-sm font-semibold tracking-[0.08em] text-white backdrop-blur-sm transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
           >
             VIEW DESTINATION
-          </button>
+          </Link>
         </div>
       </div>
 
